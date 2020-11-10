@@ -1,2 +1,2 @@
 #!/bin/bash
-perl -nw 'print if(++$x)%2'
+ls -1 | paste - - | cut -f1
