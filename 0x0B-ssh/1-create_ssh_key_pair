@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# Setups a key with name, bit size and passphrase
+ssh-keygen -t rsa -f holberton -b 4096 -N betty
