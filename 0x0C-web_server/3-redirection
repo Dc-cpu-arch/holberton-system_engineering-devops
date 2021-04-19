@@ -3,7 +3,7 @@
 sudo apt-get update
 sudo apt-get -y install nginx
 echo 'Holberton School' > /var/www/html/index.html
-STRING="\tlocation /redirect_me {\n\t\treturn 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\n\t}\n"
+STRING="\tlocation /redirect_me {\n\t\treturn 301 https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;\n\t}\n"
 FIND=$(grep "redirect_me" /etc/nginx/sites-available/default)
 if [[ -z $FIND ]]; then
 	sed -i "49i $STRING" /etc/nginx/sites-available/default
