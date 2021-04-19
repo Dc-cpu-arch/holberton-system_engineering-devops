@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+#Create a 404 HTTP header code
+sudo apt-get -y update
+sudo apt-get -y install nginx
+REDIRECT='\\tlocation /redirect_me {\n\t\treturn 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\n\t}\n'
+NOT404='\\n\terror_page   404  =  /404.html;\n'
+echo "Holberton School" > /var/www/html/index.html
+echo "Cici n'est pas une page" > /var/www/html/404.html
+sed -i "49i $REDIRECT" /etc/nginx/sites-available/default
+sed -i "42i $NOT404" /etc/nginx/sites-available/default
+service nginx restart
