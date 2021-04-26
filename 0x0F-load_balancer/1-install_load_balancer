@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# Sets up this server as a HAProxy load balancer
+apt-get update
+apt-get install -y haproxy
+
+setup="\
+frontend main
+                bind *:80
+                mode http
+                default_backend web-server
+backend web-server
+                balance roundrobin
+                server 1906-web-01 35.231.124.90 check port 80
+                server 1006-web-02 34.73.164.166 check port 80
+"
+echo "$setup" >> /etc/haproxy/haproxy.cfg
+echo "ENABLED=1" >> /etc/default/haproxy
+service haproxy restart

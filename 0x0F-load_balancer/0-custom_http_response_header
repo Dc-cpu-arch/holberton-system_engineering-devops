@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# Sets up an High Availavility Proxy haproxy load balancer
+apt-get update
+apt-get -y install nginx
+header="\t\tadd_header X-Served-By '$HOSTNAME';"
+sed -i "40i\ $header" /etc/nginx/sites-enabled/default
+service nginx reload
+service nginx restart
+
