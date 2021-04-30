@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 # NGINX runs as user nginx
 sudo pkill apache2
-block"/etc/nginx/sites-available/default"
-sudo sed -i 's/ 80 / 8080 /g' "$block"
-sudo sed -i 's/:80 / 8080 /g' "$block"
-sudo sed -i 's/server_name localhost/server_name _/g' "$block"
+file="/etc/nginx/sites-available/default"
+sudo sed -i 's/ 80 / 8080 /g' "$file"
+sudo sed -i 's/:80 / 8080 /g' "$file"
+sudo sed -i 's/server_name localhost/server_name _/g' "$file"
 sudo chown -R nginx:nginx /etc/nginx
 sudo chmod -R 755 /etc/nginx/nginx.conf
 sudo chsh -s /bin/bash nginx
