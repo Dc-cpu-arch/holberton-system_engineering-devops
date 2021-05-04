@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# Bash script that will display information about servers behind a domain name
+# domain names auditor
+func_display()
+{
+    host="$1.$2"
+    info=$(dig "$host" | grep -A1 'ANSWER SECTION:' | tail -1 | tr '\t' '#' | tr ' ' '#')
+    ip_address=$(echo "$info" | cut -d'#' -f5-)
+    redirect=$(echo "$info" | cut -d'#' -f4)
+    echo "$1 $redirect $ip_address" | awk '{print "The subdomain "$1" is a "$2" record and points to "$3}'
+}
+
+if [ "$#" -eq 1 ]
+then
+    func_display "www" "$1"
+    func_display "lb-01" "$1"
+    func_display "web-01" "$1"
+    func_display "web-02" "$1"
+elif [ "$#" -eq 2 ]
+then
+    func_display "$2" "$1"
+fi
