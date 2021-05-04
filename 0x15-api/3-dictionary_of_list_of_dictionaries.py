@@ -1,40 +1,35 @@
 #!/usr/bin/python3
-""" Module that exports data in the JSON format """
+""" Module that stores fetched data in a json"""
+import csv
 import json
 import requests
-import urllib.request
 
 
-def main():
-    """ Method that records all tasks that are owned by employee """
-    url = 'https://jsonplaceholder.typicode.com'
-    user = '{}/users/'.format(url)
-    todos = '{}/todos/'.format(url)
+if __name__ == '__main__':
+    userId = 1
+    user_tasks = {}
+    url_todo = 'https://jsonplaceholder.typicode.com/todos/'
+    url_user = 'https://jsonplaceholder.typicode.com/users/'
+    users = requests.get(url_user).json()
 
-    # GET info from URLs
-    res = requests.get(user)
-    info = res.json()
-    tasks = requests.get(todos)
-    todo = tasks.json()
-    file_name = 'todo_all_employess.json'
+    for userId in range(1, len(users) + 1):
+        todo = requests.get(url_todo, params={'userId': userId})
+        user = requests.get(url_user, params={'id': userId})
 
-    user_id = {}
-    user_name = {}
+        todo_dict_list = todo.json()
+        user_dict_list = user.json()
+        task_list = []
+        employee = user_dict_list[0].get('username')
 
-    for user in info:
-        id = user.get('id')
-        user_id[id] = []
-        user_name[id] = user.get('username')
+        for task in todo_dict_list:
+            status = task.get('completed')
+            title = task.get('title')
+            task_dict = {}
+            task_dict['task'] = title
+            task_dict['completed'] = status
+            task_dict['username'] = employee
+            task_list.append(task_dict)
+        user_tasks[userId] = task_list
 
-    for task in todo:
-        task_id = {}
-        id = task.get('userId')
-        task_id = {'username': user_name.get(id), 'task': task.get('title'),
-                   'completed': task.get('completed')}
-        user_id.get(id).append(task_id)
-
-    with open(file_name, 'w') as filename:
-        json.dump(user_id, filename)
-
-if __name__ == "__main__":
-    main()
+    with open("todo_all_employees.json", "w+") as jsonfile:
+        json.dump(user_tasks, jsonfile)
